@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    links:
+      - app
+    ports:
+      - "82:82"
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+      - ./src:/var/www/
+    restart: always
+    networks:
+      - recruits
+  app:
+    container_name: app
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www
+    working_dir: /var/www/
+    tty: true
+    restart: always
+    networks:
+      - recruits
+
+  database:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: database
+    volumes:
+      - ./database/data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: securerootpassword
+      MYSQL_DATABASE: app
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - 3336:3306
+    restart: always
+    networks:
+      - recruits
+
+networks:
+  recruits:
+    name: recruits
+
