@@ -9,7 +9,7 @@ services:
     links:
       - app
     ports:
-      - "82:82"
+      - "80:80"
     volumes:
       - ./nginx/:/etc/nginx/conf.d/
       - ./src:/var/www/

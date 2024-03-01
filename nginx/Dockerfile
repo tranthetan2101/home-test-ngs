@@ -1,2 +1,2 @@
 FROM nginx:stable-alpine
-EXPOSE 82
+EXPOSE 80
